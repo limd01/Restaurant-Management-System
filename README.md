@@ -15,3 +15,4 @@
 | **Table** | Chandrika | Wrote the class and tested the class. GenAI assisted with checking for full functionality |
 | **TableTest** | Chandrika | Wrote the test class and tested the class. GenAI assisted with making the test cases |
 | **WaitQueue** | Anna-Maria | Wrote the class and revised it |
+| **Attribution Table** | Chandrika | Made the table |
