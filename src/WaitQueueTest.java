@@ -59,11 +59,12 @@ public class WaitQueueTest extends TestCase {
     }
 
     public void testEnqueueVIPOrderingAllBranches() {
-        Reservation reg1 = new Reservation();
-        Reservation reg2 = new Reservation();
-        Reservation vip1 = new Reservation();
-        Reservation vip2 = new Reservation();
-        Reservation vip3 = new Reservation();
+        Reservation reg1 = new Reservation("RegOne", 2, false, baseTime);
+        Reservation reg2 = new Reservation("RegTwo", 2, false, baseTime);
+        Reservation vip1 = new Reservation("VipOne", 2, true, baseTime);
+        Reservation vip2 = new Reservation("VipTwo", 2, true, baseTime);
+        Reservation vip3 = new Reservation("VipThree", 2, true, baseTime);
+        
 
         // Branch 1: vipCount == 0 when regular parties are already waiting
         queue.enqueue(reg1);
@@ -173,7 +174,7 @@ public class WaitQueueTest extends TestCase {
         }
         assertNotNull(emptyRemove);
 
-        queue.enqueue(new Reservation());
+        queue.enqueue(new Reservation("Filler", 2, false, baseTime));
 
         // Null or blank name
         Exception nullName = null;
