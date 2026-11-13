@@ -2,6 +2,18 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class MenuItemTest {
+    
+    private static void expectThrows(Class<? extends Exception> type, Runnable code) {
+        try {
+            code.run();
+        }
+        catch (Exception e) {
+            assertTrue(type.isInstance(e));
+            return;
+        }
+        fail("Expected " + type.getSimpleName());
+    }
+    
     @Test public void testConstructorAndGetters() {
         MenuItem item = new MenuItem("Pizza", 12.50, 15);
         assertEquals("Pizza", item.getName());
@@ -16,12 +28,12 @@ public class MenuItemTest {
     }
 
     @Test public void testRejectsInvalidName() {
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new MenuItem("", 5.0, 5));
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new MenuItem("Pizza, Pasta", 5.0, 5));
         MenuItem item = new MenuItem("Pizza", 5.0, 5);
-        assertThrows(IllegalArgumentException.class, () -> item.setName("!!!"));
+        expectThrows(IllegalArgumentException.class, () -> item.setName("!!!"));
     }
 
     @Test public void testSetPrice() {
@@ -31,10 +43,10 @@ public class MenuItemTest {
     }
 
     @Test public void testRejectsInvalidPrice() {
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new MenuItem("Pizza", 0, 5));
         MenuItem item = new MenuItem("Pizza", 5, 5);
-        assertThrows(IllegalArgumentException.class, () -> item.setPrice(-2));
+        expectThrows(IllegalArgumentException.class, () -> item.setPrice(-2));
     }
 
     @Test public void testSetWaitTime() {
@@ -44,10 +56,10 @@ public class MenuItemTest {
     }
 
     @Test public void testRejectsInvalidWaitTime() {
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new MenuItem("Pizza", 5, 0));
         MenuItem item = new MenuItem("Pizza", 5, 5);
-        assertThrows(IllegalArgumentException.class, () -> item.setWaitTime(-1));
+        expectThrows(IllegalArgumentException.class, () -> item.setWaitTime(-1));
     }
 
     @Test public void testToString() {
