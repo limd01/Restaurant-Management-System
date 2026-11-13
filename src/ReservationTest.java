@@ -3,6 +3,17 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 public class ReservationTest {
+    
+    private static void expectThrows(Class<? extends Exception> type, Runnable code) {
+        try {
+            code.run();
+        }
+        catch (Exception e) {
+            assertTrue(type.isInstance(e));
+            return;
+        }
+        fail("Expected " + type.getSimpleName());
+    }
     private final LocalDateTime time = LocalDateTime.of(2026, 11, 12, 12, 0);
 
     @Test public void testValidReservationAndGetters() {
@@ -21,26 +32,26 @@ public class ReservationTest {
     @Test public void testRejectsNullOrBlankName() {
         assertFalse(Reservation.isValidName(null));
         assertFalse(Reservation.isValidName("   "));
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new Reservation("", 2, false, time));
     }
 
     @Test public void testRejectsLongOrSpecialCharacterName() {
         assertFalse(Reservation.isValidName("This name is definitely too long"));
         assertFalse(Reservation.isValidName("Smith, John"));
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new Reservation("Smith, John", 2, false, time));
     }
 
     @Test public void testRejectsPartySizeOutsideRange() {
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new Reservation("Smith", 0, false, time));
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new Reservation("Smith", 7, false, time));
     }
 
     @Test public void testRejectsNullReservationTime() {
-        assertThrows(IllegalArgumentException.class,
+        expectThrows(IllegalArgumentException.class,
             () -> new Reservation("Smith", 2, false, null));
     }
 
