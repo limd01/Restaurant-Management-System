@@ -68,14 +68,16 @@ We will focus on finishing the MVP first. We will keep CSV saving and loading as
 
 ### 4. New Tests Needed
 
-We plan to add tests for:
+We already have tests for `WaitQueue`, `Table`, `Reservation`, `MenuItem`, and `DLinkedDeque`.
 
-- `Restaurant`: Adding parties, seating, and checkout.
-- `WaitQueue`: Skipping parties, VIP order, and duplicate names.
-- `Table`: Orders, bills, and empty tables.
-- `HostController`: Invalid names, party sizes, and table numbers.
-- `MemberRegistry`: Invalid member IDs.
-- `CsvStore`: Missing or invalid files.
+For the next deliverable, we plan to:
+
+- Add more `WaitQueueTest` tests for the new skip feature.
+- Create `RestaurantTest` to test seating and checkout.
+- Add more `TableTest` tests if needed.
+- Create tests for `HostController`, `MemberRegistry`, and `CsvStore` when those features are ready.
+
+We will also test invalid inputs to make sure the program does not crash.
 
 ### 5. Division of Work
 
