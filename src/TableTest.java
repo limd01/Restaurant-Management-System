@@ -3,6 +3,17 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 public class TableTest {
+    
+    private static void expectThrows(Class<? extends Exception> type, Runnable code) {
+        try {
+            code.run();
+        }
+        catch (Exception e) {
+            assertTrue(type.isInstance(e));
+            return;
+        }
+        fail("Expected " + type.getSimpleName());
+    }
     private final LocalDateTime now = LocalDateTime.of(2026, 11, 12, 12, 0);
     private Reservation party(int size) {
         return new Reservation("Taylor", size, false, now);
@@ -18,9 +29,9 @@ public class TableTest {
     }
 
     @Test public void testRejectsInvalidTableData() {
-        assertThrows(IllegalArgumentException.class, () -> new Table(0, 4));
-        assertThrows(IllegalArgumentException.class, () -> new Table(1, 0));
-        assertThrows(IllegalArgumentException.class, () -> new Table(1, 7));
+        expectThrows(IllegalArgumentException.class, () -> new Table(0, 4));
+        expectThrows(IllegalArgumentException.class, () -> new Table(1, 0));
+        expectThrows(IllegalArgumentException.class, () -> new Table(1, 7));
     }
 
     @Test public void testReserveAndClear() {
@@ -38,15 +49,15 @@ public class TableTest {
 
     @Test public void testRejectsInvalidReservation() {
         Table table = new Table(1, 2);
-        assertThrows(IllegalArgumentException.class, () -> table.reserve(null, now));
-        assertThrows(IllegalArgumentException.class, () -> table.reserve(party(2), null));
-        assertThrows(IllegalArgumentException.class, () -> table.reserve(party(4), now));
+        expectThrows(IllegalArgumentException.class, () -> table.reserve(null, now));
+        expectThrows(IllegalArgumentException.class, () -> table.reserve(party(2), null));
+        expectThrows(IllegalArgumentException.class, () -> table.reserve(party(4), now));
     }
 
     @Test public void testRejectsReservingOccupiedTable() {
         Table table = new Table(1, 4);
         table.reserve(party(2), now);
-        assertThrows(IllegalStateException.class, () -> table.reserve(party(2), now));
+        expectThrows(IllegalStateException.class, () -> table.reserve(party(2), now));
     }
 
     @Test public void testAddOrderAndGetOrders() {
@@ -61,9 +72,9 @@ public class TableTest {
     @Test public void testRejectsInvalidOrder() {
         Table table = new Table(1, 4);
         table.reserve(party(2), now);
-        assertThrows(IllegalArgumentException.class, () -> table.addOrder(null));
+        expectThrows(IllegalArgumentException.class, () -> table.addOrder(null));
         Table empty = new Table(2, 2);
-        assertThrows(IllegalStateException.class,
+        expectThrows(IllegalStateException.class,
             () -> empty.addOrder(new MenuItem("Tea", 2, 2)));
     }
 
