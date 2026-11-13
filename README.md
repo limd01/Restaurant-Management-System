@@ -41,6 +41,11 @@ We will add new test cas
 | **Table** | Chandrika | Wrote the class and tested the class. GenAI assisted with checking for full functionality |
 | **TableTest** | Chandrika | Wrote the test class and tested the class. GenAI assisted with making the test cases |
 | **WaitQueue** | Anna-Maria | Wrote the class and revised it |
+| **WaitQueueTest** | Don | Wrote the test class to check the waiting queue and its methods. GenAI assisted with reviewing the test cases |
+| **HostController** | Don | Wrote the class to connect the restaurant model and console view. GenAI assisted with the code |
+| **ConsoleView** | Don | Wrote the class to display the menu and handle user input. GenAI assisted with the code |
+| **Main** | Don | Wrote the class to start the program. GenAI assisted with the code |
+| **GitHub Repository** | Don | Created the GitHub repository and set it up for the team |
 | **Attribution Table** | Chandrika | Made the table |
 
 ---
