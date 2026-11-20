@@ -13,6 +13,30 @@ public class RestaurantTest extends TestCase {
         baseTime = LocalDateTime.of(2026, 11, 12, 18, 0);
     }
 
+    /** Fills both 6-tops so any 6-person party must wait. */
+    private void fillSixTops() {
+        restaurant.addReservation(new Reservation("SixOne", 6, false, baseTime), baseTime);
+        restaurant.addReservation(new Reservation("SixTwo", 6, false, baseTime), baseTime);
+    }
+
+    private boolean registerThrows(String id) {
+        try {
+            restaurant.registerMember(id);
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isVipThrows(String id) {
+        try {
+            restaurant.isVipMember(id);
+        } catch (IllegalArgumentException e) {
+            return true;
+        }
+        return false;
+    }
+
     public void testInitialLayoutAndBestFitTable() {
         assertEquals(10, restaurant.getTables().size());
 
@@ -163,5 +187,147 @@ public class RestaurantTest extends TestCase {
         assertEquals(1, overtime.size());
         assertEquals("EarlyBirds", overtime.get(0).getReservation().getName());
     }
-}
 
+    // ---- NEW: VIP member tests ----
+
+    public void testRegisterMemberAndIsVipMember() {
+        assertFalse(restaurant.isVipMember("1234"));
+        restaurant.registerMember("1234");
+        assertTrue(restaurant.isVipMember("1234"));
+
+        // Extra spaces are trimmed
+        assertTrue(restaurant.isVipMember(" 1234 "));
+        restaurant.registerMember(" 5678 ");
+        assertTrue(restaurant.isVipMember("5678"));
+
+        // A well-formed ID that was never registered is not a VIP
+        assertFalse(restaurant.isVipMember("9999"));
+
+        // Registering the same ID twice is harmless
+        restaurant.registerMember("1234");
+        assertTrue(restaurant.isVipMember("1234"));
+    }
+
+    public void testMemberIdBadFormatThrows() {
+        assertTrue(registerThrows(null));
+        assertTrue(registerThrows(""));
+        assertTrue(registerThrows("123"));
+        assertTrue(registerThrows("12345"));
+        assertTrue(registerThrows("abcd"));
+        assertTrue(registerThrows("12 4"));
+        assertTrue(registerThrows("12-4"));
+
+        assertTrue(isVipThrows(null));
+        assertTrue(isVipThrows(""));
+        assertTrue(isVipThrows("123"));
+        assertTrue(isVipThrows("12345"));
+        assertTrue(isVipThrows("abcd"));
+    }
+
+    public void testRegisteredMemberGetsVipPriorityInLine() {
+        fillSixTops();
+        restaurant.registerMember("1234");
+
+        boolean regularIsVip = restaurant.isVipMember("0000");
+        boolean memberIsVip = restaurant.isVipMember("1234");
+        assertFalse(regularIsVip);
+        assertTrue(memberIsVip);
+
+        restaurant.addReservation(new Reservation("Regular", 6, regularIsVip, baseTime), baseTime);
+        restaurant.addReservation(new Reservation("Member", 6, memberIsVip, baseTime), baseTime);
+
+        assertEquals(2, restaurant.getWaitlist().size());
+        assertEquals("Member", restaurant.getWaitlist().peek().getName());
+        assertTrue(restaurant.getWaitlist().peek().isVip());
+    }
+
+    // ---- NEW: cancelReservation tests ----
+
+    public void testCancelReservationRemovesWaitingParty() {
+        fillSixTops();
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+        assertEquals(1, restaurant.getWaitlist().size());
+
+        restaurant.cancelReservation("wait1");  // case-insensitive
+        assertTrue(restaurant.getWaitlist().isEmpty());
+        assertFalse(restaurant.isNameActive("Wait1"));
+    }
+
+    public void testCancelReservationKeepsOrderOfOthers() {
+        fillSixTops();
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+        restaurant.addReservation(new Reservation("Wait2", 6, false, baseTime), baseTime);
+        restaurant.addReservation(new Reservation("Wait3", 6, false, baseTime), baseTime);
+
+        restaurant.cancelReservation("Wait2");
+        assertEquals(2, restaurant.getWaitlist().size());
+        assertEquals("Wait1", restaurant.getWaitlist().dequeue().getName());
+        assertEquals("Wait3", restaurant.getWaitlist().dequeue().getName());
+    }
+
+    public void testCancelReservationFreesNameForReuse() {
+        fillSixTops();
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+        restaurant.cancelReservation("Wait1");
+
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+        assertEquals(1, restaurant.getWaitlist().size());
+        assertTrue(restaurant.isNameActive("Wait1"));
+    }
+
+    public void testCancelReservationNameNotWaitingThrows() {
+        fillSixTops();
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+
+        Exception missing = null;
+        try {
+            restaurant.cancelReservation("Ghost");
+        } catch (NoSuchElementException e) {
+            missing = e;
+        }
+        assertNotNull(missing);
+        assertEquals(1, restaurant.getWaitlist().size());
+
+        // A seated party is not on the waitlist, so it cannot be cancelled here
+        Exception seated = null;
+        try {
+            restaurant.cancelReservation("SixOne");
+        } catch (NoSuchElementException e) {
+            seated = e;
+        }
+        assertNotNull(seated);
+        assertTrue(restaurant.isNameActive("SixOne"));
+    }
+
+    public void testCancelReservationEmptyWaitlistThrows() {
+        Exception thrown = null;
+        try {
+            restaurant.cancelReservation("Anyone");
+        } catch (NoSuchElementException e) {
+            thrown = e;
+        }
+        assertNotNull(thrown);
+    }
+
+    public void testCancelReservationBlankOrNullNameThrows() {
+        fillSixTops();
+        restaurant.addReservation(new Reservation("Wait1", 6, false, baseTime), baseTime);
+
+        Exception blank = null;
+        try {
+            restaurant.cancelReservation("   ");
+        } catch (IllegalArgumentException e) {
+            blank = e;
+        }
+        assertNotNull(blank);
+
+        Exception nullName = null;
+        try {
+            restaurant.cancelReservation(null);
+        } catch (IllegalArgumentException e) {
+            nullName = e;
+        }
+        assertNotNull(nullName);
+        assertEquals(1, restaurant.getWaitlist().size());
+    }
+}
