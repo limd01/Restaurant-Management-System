@@ -99,13 +99,16 @@ We will also test invalid inputs to make sure the program does not crash.
 | **MenuItem** | Chandrika | Wrote and tested the class with GenAI assistance |
 | **MenuItemTest** | Chandrika | Wrote test cases with GenAI assistance |
 | **Restaurant** | Anna-Maria | Wrote and revised the class |
+| **RestaurantTest** | Chandrika | Wrote test cases with GenAI assistance |
 | **Reservation** | Chandrika | Wrote and tested the class with GenAI assistance |
 | **ReservationTest** | Chandrika | Wrote test cases with GenAI assistance |
 | **Table** | Chandrika | Wrote and tested the class with GenAI assistance |
 | **TableTest** | Chandrika | Wrote test cases with GenAI assistance |
 | **WaitQueue** | Anna-Maria | Wrote and revised the class |
 | **WaitQueueTest** | Don | Wrote tests for the waiting queue with GenAI assistance |
+| **WaitQueueTest** | Chandrika | Updated class with GenAI assistance |
 | **HostController** | Don | Wrote the controller with GenAI assistance |
+| **HostControllerTest** | Chandrika | Wrote test cases with GenAI assistance |
 | **ConsoleView** | Don | Wrote the console menu with GenAI assistance |
 | **Main** | Don | Wrote the class to start the program with GenAI assistance |
 | **GitHub Repository** | Don | Created and set up the repository |
