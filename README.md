@@ -1,4 +1,5 @@
 # CS-2114-Project-3
+
 Line and Dine
 
 ## How to Download and Run in Eclipse
@@ -21,19 +22,25 @@ We separated our program into different classes to make it easier to manage. We 
 
 We also added validation to reject invalid names, party sizes, and other bad inputs.
 
+Our program now supports adding parties, seating customers, showing restaurant status, registering VIP members, and canceling waiting parties.
+
 ### What We Learned
 
 We learned how to use a deque for a waiting list and how to connect different classes. We also learned how to write tests and handle invalid inputs.
+
+We learned how to connect the console menu to the restaurant system.
 
 ### Does the Model Work Independently?
 
 Our model does not depend on the console view. We can test classes like `WaitQueue`, `Reservation`, and `Table` separately.
 
-We still need to confirm that all the tests pass and the full program runs correctly.
+We ran our test classes in Eclipse, and all tests passed. We also ran `Main.java` and checked that the console program works.
 
 ### What Does Not Work Yet
 
-We still need to finish member ID verification, CSV saving and loading, and the complete ordering system. We also need to test the whole program together.
+We still need to finish the complete food ordering system and CSV saving and loading.
+
+We also want to test more situations and improve the program for the next deliverable.
 
 ---
 
@@ -43,10 +50,10 @@ We still need to finish member ID verification, CSV saving and loading, and the 
 
 We plan to finish these features in this order:
 
-1. Run all tests and fix errors.
-2. Finish reservation and table management.
+1. Test more situations and fix any remaining problems.
+2. Improve reservation and table management.
 3. Finish ordering and checkout.
-4. Add VIP member verification.
+4. Improve VIP member verification.
 5. Add CSV saving and loading.
 
 ### 2. New Change Feature
@@ -68,21 +75,24 @@ We will focus on finishing the MVP first. We will keep CSV saving and loading as
 
 ### 4. New Tests Needed
 
-We already have tests for `WaitQueue`, `Table`, `Reservation`, `MenuItem`, and `DLinkedDeque`.
+We already have tests for `WaitQueue`, `Table`, `Reservation`, `MenuItem`, `DLinkedDeque`, `Restaurant`, and `HostController`.
+
+Our existing tests passed in Eclipse.
 
 For the next deliverable, we plan to:
 
 - Add more `WaitQueueTest` tests for the new skip feature.
-- Create `RestaurantTest` to test seating and checkout.
+- Add more `RestaurantTest` tests for seating and checkout.
 - Add more `TableTest` tests if needed.
-- Create tests for `HostController`, `MemberRegistry`, and `CsvStore` when those features are ready.
+- Add more `HostControllerTest` tests for new features.
+- Create tests for CSV saving and loading when implemented.
 
-We will also test invalid inputs to make sure the program does not crash.
+We will also test more invalid inputs to make sure the program does not crash.
 
 ### 5. Division of Work
 
-| Member | Next Tasks |
-| :--- | :--- |
+| **Member** | **Next Tasks** |
+| --- | --- |
 | Anna-Maria | Restaurant, WaitQueue, skip feature |
 | Chandrika | Reservations, tables, ordering, tests |
 | Don | Controller, console view, Main, integration testing |
@@ -92,32 +102,29 @@ We will also test invalid inputs to make sure the program does not crash.
 
 ## Attribution
 
-| Class | Who Worked on it | How |
-| :--- | :---: | :--- |
-| **DLinkedDeque** | Anna-Maria | Wrote and revised the class |
-| **DLinkedDequeTest** | To confirm | Wrote and tested the class |
-| **MenuItem** | Chandrika | Wrote and tested the class with GenAI assistance |
-| **MenuItemTest** | Chandrika | Wrote test cases with GenAI assistance |
-| **Restaurant** | Anna-Maria | Wrote and revised the class |
-| **RestaurantTest** | Chandrika | Wrote test cases with GenAI assistance |
-| **Reservation** | Chandrika | Wrote and tested the class with GenAI assistance |
-| **ReservationTest** | Chandrika | Wrote test cases with GenAI assistance |
-| **Table** | Chandrika | Wrote and tested the class with GenAI assistance |
-| **TableTest** | Chandrika | Wrote test cases with GenAI assistance |
-| **WaitQueue** | Anna-Maria | Wrote and revised the class |
-| **WaitQueueTest** | Don | Wrote tests for the waiting queue with GenAI assistance |
-| **WaitQueueTest** | Chandrika | Updated class with GenAI assistance |
-| **HostController** | Don | Wrote the controller with GenAI assistance |
-| **HostControllerTest** | Chandrika | Wrote test cases with GenAI assistance |
-| **ConsoleView** | Don | Wrote the console menu with GenAI assistance |
-| **Main** | Don | Wrote the class to start the program with GenAI assistance |
-| **GitHub Repository** | Don | Created and set up the repository |
-| **Attribution Table** | Chandrika | Made the original table |
+| **Class** | **Who Worked on it** | **How** |
+| --- | --- | --- |
+| DLinkedDeque | Anna-Maria | Wrote and revised the class |
+| DLinkedDequeTest | To confirm | Wrote tests for the deque |
+| MenuItem | Chandrika | Wrote and tested the class with GenAI assistance |
+| MenuItemTest | Chandrika | Wrote test cases with GenAI assistance |
+| Restaurant | Anna-Maria | Wrote and revised the class |
+| RestaurantTest | Chandrika | Wrote test cases with GenAI assistance |
+| Reservation | Chandrika | Wrote and tested the class with GenAI assistance |
+| ReservationTest | Chandrika | Wrote test cases with GenAI assistance |
+| Table | Chandrika | Wrote and tested the class with GenAI assistance |
+| TableTest | Chandrika | Wrote test cases with GenAI assistance |
+| WaitQueue | Anna-Maria | Wrote and revised the class |
+| WaitQueueTest | Don, Chandrika | Wrote and updated tests with GenAI assistance |
+| HostController | Don | Wrote the controller with GenAI assistance |
+| HostControllerTest | Chandrika | Wrote test cases with GenAI assistance |
+| ConsoleView | Don | Wrote the console menu with GenAI assistance |
+| Main | Don | Wrote the class to start the program with GenAI assistance |
+| GitHub Repository | Don | Created and set up the repository |
+| Attribution Table | Chandrika | Made the original table |
 
 ---
 
 ## GenAI Note
 
-We used Claude and ChatGPT to help with coding, test cases, and improving our README. We wrote and reviewed our project as a team and used GenAI suggestions to help improve the code. We still need to finish running all tests and checking the full program.
-
-
+We used Claude and ChatGPT to help with coding, test cases, and improving our README. We reviewed the suggestions and made changes to fit our project. We ran our tests in Eclipse, and all tests passed. We also ran the program and checked that its main features worked.
