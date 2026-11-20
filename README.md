@@ -18,29 +18,43 @@ Line and Dine
 
 ### What Changed
 
-We separated our program into different classes to make it easier to manage. We used `DLinkedDeque` and `WaitQueue` for the waiting list, and added `HostController`, `ConsoleView`, and `Main` to run the program.
+In Deliverable 3, we had a working restaurant program with basic options like adding parties, showing restaurant status, and checking out tables.
 
-We also added validation to reject invalid names, party sizes, and other bad inputs.
+For Deliverable 4, we added two more options to the console menu: registering VIP members and canceling waiting parties.
 
-Our program now supports adding parties, seating customers, showing restaurant status, registering VIP members, and canceling waiting parties.
+We updated `Restaurant` to handle VIP registration and cancellation. We also updated `HostController`, `ConsoleView`, and `Main` so users can access these features through the menu.
+
+We used `DLinkedDeque` and `WaitQueue` to manage the waiting list.
+
+### Change From Our Original Plan
+
+In Deliverable 3, we planned to add a skip feature that would move a waiting party to the back of the line.
+
+We originally expected to change `WaitQueue`, `Restaurant`, `HostController`, and `ConsoleView`.
+
+Instead, we focused on completing VIP registration and cancellation through the console. These features also needed changes to the restaurant logic and controller, and we updated `Main` to add the new menu options.
+
+We kept the restaurant logic in the model and used the controller to connect it to the view. The model does not depend on the console.
+
+The skip feature is not implemented yet.
 
 ### What We Learned
 
 We learned how to use a deque for a waiting list and how to connect different classes. We also learned how to write tests and handle invalid inputs.
 
-We learned how to connect the console menu to the restaurant system.
+We learned that adding new menu options also requires changes to the controller and restaurant logic.
 
 ### Does the Model Work Independently?
 
 Our model does not depend on the console view. We can test classes like `WaitQueue`, `Reservation`, and `Table` separately.
 
-We ran our test classes in Eclipse, and all tests passed. We also ran `Main.java` and checked that the console program works.
+We ran our test classes in Eclipse, and all 78 tests passed. We also ran `Main.java` and checked that the console program works.
 
 ### What Does Not Work Yet
 
 We still need to finish the complete food ordering system and CSV saving and loading.
 
-We also want to test more situations and improve the program for the next deliverable.
+We also have not implemented the skip feature. We want to test more situations and improve the program for the final deliverable.
 
 ---
 
@@ -48,26 +62,27 @@ We also want to test more situations and improve the program for the next delive
 
 ### 1. Finishing the MVP
 
-We plan to finish these features in this order:
+For the final build, we plan to finish these features in this order:
 
 1. Test more situations and fix any remaining problems.
 2. Improve reservation and table management.
-3. Finish ordering and checkout.
+3. Finish food ordering and checkout with prices.
 4. Improve VIP member verification.
 5. Add CSV saving and loading.
 
-### 2. New Change Feature
+### 2. Remaining Change Feature
 
-We plan to add a **skip feature** so the host can move a waiting party back in line.
+We still plan to add a **skip feature** so the host can move a waiting party to the back of the line.
 
-We think this will require changes to:
+This would require changes to:
 
-- `WaitQueue`: Add a method to skip a party.
+- `WaitQueue`: Add a method to move a party back in line.
 - `Restaurant`: Handle skipping reservations.
 - `HostController`: Connect the skip feature.
-- `ConsoleView`: Add a skip option to the menu.
+- `ConsoleView`: Add the skip option.
+- `Main`: Add the option to the menu.
 
-We do not expect to change `Reservation`, `Table`, or `MenuItem`.
+We do not expect to change `Reservation`, `Table`, or `MenuItem` for this feature.
 
 ### 3. Stretch Goals
 
@@ -77,19 +92,30 @@ We will focus on finishing the MVP first. We will keep CSV saving and loading as
 
 We already have tests for `WaitQueue`, `Table`, `Reservation`, `MenuItem`, `DLinkedDeque`, `Restaurant`, and `HostController`.
 
-Our existing tests passed in Eclipse.
+All 78 existing tests passed in Eclipse.
 
-For the next deliverable, we plan to:
+For the final deliverable, we plan to:
 
-- Add more `WaitQueueTest` tests for the new skip feature.
+- Add `WaitQueueTest` tests for the skip feature.
 - Add more `RestaurantTest` tests for seating and checkout.
 - Add more `TableTest` tests if needed.
 - Add more `HostControllerTest` tests for new features.
-- Create tests for CSV saving and loading when implemented.
+- Create tests for CSV saving and loading if implemented.
 
 We will also test more invalid inputs to make sure the program does not crash.
 
-### 5. Division of Work
+### 5. Three-Minute Demonstration
+
+For our demonstration, we plan to:
+
+1. Run `Main.java` and show the console menu.
+2. Register a VIP member using a four-digit ID.
+3. Add a VIP party and show that it gets seated.
+4. Add more parties until one is placed on the waitlist.
+5. Cancel a waiting party.
+6. Show our passing JUnit tests.
+
+### 6. Division of Work
 
 | **Member** | **Next Tasks** |
 | --- | --- |
