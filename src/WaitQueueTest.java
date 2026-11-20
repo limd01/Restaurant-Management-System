@@ -64,7 +64,6 @@ public class WaitQueueTest extends TestCase {
         Reservation vip1 = new Reservation("VipOne", 2, true, baseTime);
         Reservation vip2 = new Reservation("VipTwo", 2, true, baseTime);
         Reservation vip3 = new Reservation("VipThree", 2, true, baseTime);
-        
 
         // Branch 1: vipCount == 0 when regular parties are already waiting
         queue.enqueue(reg1);
@@ -201,5 +200,29 @@ public class WaitQueueTest extends TestCase {
             missingName = e;
         }
         assertNotNull(missingName);
+    }
+
+    // ---- NEW: order after interleaved enqueues and dequeues ----
+
+    public void testInterleavedEnqueueAndDequeueKeepsOrder() {
+        Reservation ann = new Reservation("Ann", 2, false, baseTime);
+        Reservation ben = new Reservation("Ben", 2, false, baseTime);
+        Reservation cat = new Reservation("Cat", 2, false, baseTime);
+        Reservation dee = new Reservation("Dee", 2, false, baseTime);
+        Reservation vic = new Reservation("Vic", 2, true, baseTime);
+
+        queue.enqueue(ann);
+        queue.enqueue(ben);
+        assertEquals("Ann", queue.dequeue().getName());   // [Ben]
+
+        queue.enqueueVIP(vic);                            // [Vic, Ben]
+        queue.enqueue(cat);                               // [Vic, Ben, Cat]
+        assertEquals("Vic", queue.dequeue().getName());   // [Ben, Cat]
+        assertEquals("Ben", queue.dequeue().getName());   // [Cat]
+
+        queue.enqueue(dee);                               // [Cat, Dee]
+        assertEquals("Cat", queue.dequeue().getName());
+        assertEquals("Dee", queue.dequeue().getName());
+        assertTrue(queue.isEmpty());
     }
 }
