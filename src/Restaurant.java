@@ -8,11 +8,19 @@ public class Restaurant {
     private final List<Table> tables;
     private final WaitQueue waitlist;
     private final List<MenuItem> menu;
+    private final List<String> vipMembers = new ArrayList<>(); 
+
+
+          
+       
+
 
     public Restaurant() {
         this.tables = new ArrayList<>();
+        
         this.waitlist = new WaitQueue();
         this.menu = new ArrayList<>();
+   
         initializeDefaultTables();
     }
 
@@ -237,10 +245,33 @@ public class Restaurant {
         }
         return null;
     }
-
+    public boolean isVipMember(String memberId) {
+        if (memberId == null || !memberId.trim().matches("\\d{4}")) {
+            throw new IllegalArgumentException("Member ID must be exactly 4 digits.");
+        }
+        return vipMembers.contains(memberId.trim());
+    }
     private int getRequiredTableTier(int partySize) {
         if (partySize <= 2) return 2;
         if (partySize <= 4) return 4;
         return 6;
     }
+    
+   
+    public void registerMember(String memberId) {
+        if (memberId == null || !memberId.trim().matches("\\d{4}")) {
+            throw new IllegalArgumentException("Member ID must be exactly 4 digits.");
+        }
+        String cleanId = memberId.trim();
+        if (!vipMembers.contains(cleanId)) {
+            vipMembers.add(cleanId);
+        }
+    }
+
+    public void cancelReservation(String name) {
+        waitlist.removeReservation(name);
+    }
+
+
+
 }

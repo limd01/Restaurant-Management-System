@@ -76,4 +76,64 @@ public class HostController {
         }
         return text;
     }
-}
+    
+    /** Seats the party if a table is free, otherwise puts them on the waitlist. */
+    public String addParty(String name, String sizeText, String memberIdText) {
+        int size;
+        try {
+            size = Integer.parseInt(sizeText.trim());
+        } catch (NumberFormatException e) {
+            return "Party size must be a number.";
+        }
+
+        try {
+            boolean isVip = false;
+            if (memberIdText != null && !memberIdText.trim().isEmpty()) {
+                isVip = restaurant.isVipMember(memberIdText);
+            }
+
+            Reservation party = new Reservation(name, size, isVip, LocalDateTime.now());
+            Table table = restaurant.findAvailableTable(size);
+            restaurant.addReservation(party, LocalDateTime.now());
+
+            String vipLabel = isVip ? " (VIP)" : "";
+            if (table != null) {
+                return party.getName() + vipLabel + " seated at table "
+                    + table.getTableId() + ".";
+            }
+            return party.getName() + vipLabel + " added to the waitlist.";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        } catch (IllegalStateException e) {
+            return "The waitlist is full. Party turned away.";
+        }
+    }
+    public String registerMember(String memberIdText) {
+        try {
+            restaurant.registerMember(memberIdText);
+            return "Member " + memberIdText.trim() + " registered as VIP.";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+
+
+    }
+    /** Cancels a party from the waitlist and returns a confirmation or error message. */
+    public String cancelParty(String name) {
+        try {
+            restaurant.cancelReservation(name);
+            return "Removed " + name.trim() + " from the waitlist.";
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        } catch (NoSuchElementException e) {
+            return e.getMessage();
+        }
+    }
+
+
+    /** Registers a 4-digit member ID with VIP status. */
+
+    }
+
+
+
